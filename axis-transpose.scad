@@ -6,10 +6,10 @@ $fs = 0.1;
 margin = 0.35;
 
 
-gearmod = 0.6;
+gearmod = 0.8;
 gear_offset = 2.5 + gearmod * 9 / 2 + 0.1;
 
-/*
+
 translate([-5, 0, 0])
 rack_axis();
 
@@ -64,7 +64,7 @@ module base() {
   }
 
   translate([-gear_offset, gear_offset, -4])
-  cylinder(9.5, 1.2);
+  cylinder(h=9.5, d=2.4);
 
   translate([-gear_offset, gear_offset, -4])
   cylinder(h=2.4, d=3.5);
