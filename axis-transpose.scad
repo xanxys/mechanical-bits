@@ -18,8 +18,7 @@ rotate(90, [0, 0, 1])
 rack_axis();
 
 translate([-gear_offset, gear_offset, -1.5])
-spur_gear(gearmod , 9, 7, 2.5, pressure_angle=20, helix_angle=0);
-*/
+spur_gear(gearmod, 9, 7, 2.5, pressure_angle=20, helix_angle=0);
 
 base();
 
