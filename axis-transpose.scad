@@ -6,6 +6,42 @@ $fs = 0.1;
 margin = 0.35;
 
 
+// feedback indexer
+
+translate([0, 0, 10])
+indexer();
+
+module indexer() {
+  cube([6, 6, 3]);
+  
+  
+  xflat=1.5;
+  yflat=3;
+  xsize=3;
+  ysize=4;
+  h=1;
+  translate([0, 0, 3])
+  indexer_bump(1.5, 3, 3, 4, 1);
+  
+}
+
+// A frustum, connecting bottom rect [0,xsize]x[0,ysize]x[0,0] and top rect [0,xflat]x[0,yflat]x[h,h]
+module indexer_bump(xflat, yflat, xsize, ysize, h) {
+  polyhedron(
+    points=[
+      // top flat face (xflat x yflat)
+      [0, 0, h], [0, yflat, h], [xflat, yflat, h], [xflat, 0, h],
+      // bottom face (xsize x ysize)
+      [0, 0, 0], [0, ysize, 0], [xsize, ysize, 0], [xsize, 0, 0]
+    ],
+    faces=[[0, 1, 2, 3], [1, 5, 6, 2], [2, 6, 7, 3], [0, 3, 7, 4], [0, 4, 5, 1], [4, 7, 6, 5]],
+    convexity=1);
+}
+
+
+
+
+// axis transposer
 gearmod = 0.8;
 gear_offset = 2.5 + gearmod * 9 / 2 + 0.1;
 
