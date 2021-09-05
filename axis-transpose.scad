@@ -1,43 +1,66 @@
 // https://github.com/chrisspen/gears/blob/master/gears.scad
 use <gears.scad>;
 
-$fs = 0.1;
+$fs = 0.2;
 
 margin = 0.35;
 
+gearmod_v=1.3;
 
-// feedback indexer
+// input axis
 
-translate([0, 0, 10])
-indexer();
+//translate([-4, 0, 0])
+//rotate(90, [0, -1, 0])
+//cylinder(h=10, d=3, $fn=3);
 
-module indexer() {
-  cube([6, 6, 3]);
+// input structural axis
+rotate(90, [0, -1, 0])
+cylinder(h=12, d=2, center=true);
+
+// input cage stopper
+translate([3.5, 0, 0])
+rotate(90, [0, -1, 0])
+cylinder(h=1, d=3, center=true);
+
+// input gear
+translate([-4, 0, 0])
+rotate(90, [0, 1, 0])
+rotate(360 / 4 / 2, [0, 0, 1])
+bevel_gear(gearmod_v, 4, 45, 2, 0, pressure_angle=5);
+
+// cage
+difference() {
+  translate([0, 2, 0])
+  cube([10, 7.5, 5], center=true);
   
+  // space for input axis
+  rotate(90, [0, -1, 0])
+  cylinder(h=12, d=2.3, center=true);
   
-  xflat=1.5;
-  yflat=3;
-  xsize=3;
-  ysize=4;
-  h=1;
-  translate([0, 0, 3])
-  indexer_bump(1.5, 3, 3, 4, 1);
+  // space for output axis
+  translate([0, 4, 0])
+  rotate(90, [-1, 0, 0])
+  cylinder(h=10, d=2.3);
   
+  // space for gears
+  cube([8.3, 8.3, 6], center=true);
 }
 
-// A frustum, connecting bottom rect [0,xsize]x[0,ysize]x[0,0] and top rect [0,xflat]x[0,yflat]x[h,h]
-module indexer_bump(xflat, yflat, xsize, ysize, h) {
-  polyhedron(
-    points=[
-      // top flat face (xflat x yflat)
-      [0, 0, h], [0, yflat, h], [xflat, yflat, h], [xflat, 0, h],
-      // bottom face (xsize x ysize)
-      [0, 0, 0], [0, ysize, 0], [xsize, ysize, 0], [xsize, 0, 0]
-    ],
-    faces=[[0, 1, 2, 3], [1, 5, 6, 2], [2, 6, 7, 3], [0, 3, 7, 4], [0, 4, 5, 1], [4, 7, 6, 5]],
-    convexity=1);
-}
 
+// output axis
+translate([0, 4, 0])
+rotate(90, [-1, 0, 0])
+cylinder(h=10, d=2);
+
+// output cage stopper
+translate([0, 6, 0])
+rotate(90, [-1, 0, 0])
+cylinder(h=1, d=3);
+
+// output gear
+translate([0, 4, 0])
+rotate(90, [1, 0, 0])
+bevel_gear(gearmod_v, 4, 45, 2, 0, pressure_angle=5);
 
 
 
@@ -45,7 +68,7 @@ module indexer_bump(xflat, yflat, xsize, ysize, h) {
 gearmod = 0.8;
 gear_offset = 2.5 + gearmod * 9 / 2 + 0.1;
 
-
+/*
 translate([-5, 0, 0])
 rack_axis();
 
@@ -55,8 +78,10 @@ rack_axis();
 
 translate([-gear_offset, gear_offset, -1.5])
 spur_gear(gearmod, 9, 7, 2.5, pressure_angle=20, helix_angle=0);
+*/
 
-base();
+//base();
+
 
 module rack_axis() {
   translate([0, 2.5, -1.5])
