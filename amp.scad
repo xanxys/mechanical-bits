@@ -1,5 +1,6 @@
 // https://github.com/chrisspen/gears/blob/master/gears.scad
 use <gears.scad>;
+use <./module.scad>;
 
 $fs = 0.2;
 
@@ -8,60 +9,10 @@ gearmod = 0.8;
 gearmod_v = 1.3;
 
 base_module();
+conn_data_x(0, 1, 0, false);
+conn_data_x(2, 1, 0, true);
+conn_pwr_y(1, 0, 0, false);
 
-module base_module(nx=2, ny=2, nz=3) {
-  g = 12;
-
-  // base layer
-  translate([0, 0, 0])
-  cube([g * nx, g * ny, 0.8]); // 0.2+ 0.3n
-  
-  // pillars
-  cube([str_w, str_w, g]);
-
-  translate([12 * nx - str_w, 0, 0])
-  cube([str_w, str_w, 12]);
-
-  translate([0, 12 * ny - str_w, 0])
-  cube([str_w, str_w, 12]);
-
-  translate([12 * nx - str_w, 12 * ny - str_w, 0])
-  cube([str_w, str_w, 12]);
-  
-  // module conn
-  /*
-  translate([12 - str_w, 12 - str_w, 0])
-  cube([str_w * 2, str_w * 2, str_t]);
-  
-  translate([12 - str_w, 12 - str_w, 12 - str_t])
-  cube([str_w * 2, str_w * 2, str_t]);
-  */
-  
-  // structural interface
-  str_w = 1.8; // module structural pillar half size
-  str_t = 1.2; // structural interface internal thickness
-  
-  intersection() {
-    difference() {
-      for (ix = [0:nx]) {
-        for (iy = [0:ny]) {
-          for (iz = [0:nz]) {
-            if (ix == 0 || iy == 0 || iz == 0 || ix == nx || iy == ny || iz == nz) {
-              translate([ix * g, iy *g, iz * g])
-              cube([str_w * 2, str_w * 2, str_w * 2], center=true);
-            }
-          }
-        }
-      }
-      // remove internal space (leaving str_t)
-      translate([str_t, str_t, str_t])
-      cube([nx * g - str_t * 2, ny * g - str_t * 2, nz * g - str_t * 2]);
-    }
-    
-    // limit to module size
-    cube([nx * g, ny * g, nz * g]);
-  }
-}
 
 // iaxis
 translate([0, 12 * 1.5, 12 * 0.5])
@@ -75,16 +26,6 @@ cube([8, 3, 3], center=true);
 translate([12 + 6, -1, 6])
 rotate(90, [1, 0, 0])
 cylinder(h=6, d=3, center=true);
-
-// paxis wall
-translate([12, 0, 0])
-difference() {  
-  cube([12, 0.8, 12]);
-  
-  translate([6, -1, 6])
-  rotate(90, [1, 0, 0])
-  cylinder(h=5, d=3.6, center=true);
-}
 
 // paxis center holder
 translate([12 + 3, 12 + 2, 0])
@@ -161,9 +102,9 @@ rotate(-27, [0, 0, 1])
 cube([3, 12, 1]);
 
 // iaxis-cage
-translate([1.5, 6, 2])
-rotate(45, [1, 0, 0])
-cube([1, 10, 3]);
+translate([1.5, 16, 2])
+rotate(-45, [0, 1, 0])
+cube([10, 1, 3]);
 
 module rack_cage() {
   gm = 0.7;
