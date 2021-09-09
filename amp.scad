@@ -98,10 +98,37 @@ translate([6, 10, 2])
 rotate(-27, [0, 0, 1])
 cube([3, 12, 1]);
 
-// iaxis-cage
+// iaxis -> cage shifter
 translate([1.5, 16, 2])
 rotate(-45, [0, 1, 0])
-cube([10, 1, 3]);
+difference() {
+  union() {
+    cube([10, 1, 3]);
+    
+    translate([0, 3, 0])
+    cube([10, 1, 3]);
+  }
+  
+  translate([0.5, -5, 0.5])
+  cube([9, 20, 2]);
+}
+
+translate([8, 15, 2])
+rotate(-90, [0, 1, 0])
+difference() {
+  union() {
+    cube([10, 1, 3]);
+    
+    translate([0, 5, 0])
+    cube([10, 1, 3]);
+  }
+  
+  translate([0.5, -5, 0.5])
+  cube([9, 20, 2]);
+}
+
+
+
 
 module rack_cage() {
   gm = 0.7;
