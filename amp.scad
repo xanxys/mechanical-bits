@@ -9,14 +9,14 @@ gearmod = 0.8;
 
 
 base_module();
-conn_data_x(0, 1, 0, false);
+conn_data_y(0, 0, 0, false);
 conn_data_x(2, 1, 0, true);
 conn_pwr_y(1, 0, 0, false);
 
 
 // i-axis
-translate([0, 12 * 1.5, 12 * 0.5])
-cube([8, 3, 3], center=true);
+translate([12 * 0.5, 0, 12 * 0.5])
+cube([3, 8, 3], center=true);
 
 // o-axis
 translate([24, 12 * 1.5, 12 * 0.5])
@@ -57,13 +57,13 @@ module power_axis_redir() {
   gearmod = 1.5;
   
   // input gear
-  translate([-4.5, 0, 0])
+  translate([-1.5, 0, 0])
   rotate(90, [0, 1, 0])
   rotate(360 / 4 / 2, [0, 0, 1])
   bevel_gear(gearmod, 4, 45, 2, 0, pressure_angle=5);
 
   // cage
-  translate([-0.3, 0, 0])
+  translate([-0.3 + 3, 0, 0])
   difference() {
     translate([0, 2, 0])
     cube([10.5, 9, 5], center=true);
@@ -80,30 +80,31 @@ module power_axis_redir() {
   }
 
   // output axis
-  translate([0, 4, 0])
+  translate([3, 4, 0])
   rotate(90, [-1, 0, 0])
   cylinder(h=12, d=2.1);
 
   // output cage stopper
-  translate([0, 7.5, 0])
+  translate([3, 7.5, 0])
   cube([4.5, 0.9, 0.9], center=true);
 
   // output gear
-  translate([0, 4.5, 0])
+  translate([3, 4.5, 0])
   rotate(90, [1, 0, 0])
   bevel_gear(gearmod, 4, 45, 2, 0, pressure_angle=5);
 
 }
 
-  //translate([0, -1, 0]) // cage shift
-translate([3, 8, 4])
+// Y: [-3, 3]
+  translate([0, -3, 0]) // cage shift
+translate([3, 11, 4])
 rotate(90, [0, 0, 1])
 rotate(90, [1, 0, 0])
 rack_cage();
 
-// pinion
- //translate([0, 0, -1.5]) // axis shift
-translate([3, 8, 4])
+// pinion (Z: [-1.5, 1.5]
+ //translate([0, 0, 1.5]) // axis shift
+translate([3, 11 , 4])
 rotate(90, [0, 0, 1])
 rotate(90, [1, 0, 0])
 pinion();
@@ -114,26 +115,12 @@ rotate(-27, [0, 0, 1])
 cube([3, 12, 1]);
 
 // iaxis -> cage shifter
-translate([1.5, 16, 9])
+translate([8, 6, 9])
+rotate(90, [0, 0, 1])
 rotate(45, [0, 1, 0])
 difference() {  
   translate([0, 0.5, 0])
   cube([10, 3, 3]);
-  
-  translate([0.5, -5, 0.5])
-  cube([9, 20, 2]);
-}
-
-translate([8, 15, 2])
-rotate(-90, [0, 1, 0])
-difference() {
-  union() {
-    translate([0, -1, 0])
-    cube([10, 2, 3]);
-    
-    translate([0, 5, 0])
-    cube([10, 2, 3]);
-  }
   
   translate([0.5, -5, 0.5])
   cube([9, 20, 2]);

@@ -61,6 +61,24 @@ module conn_data_x(ix, iy, iz, side_pos) {
   }
 }
 
+// side_pos: true:Y+ / false:Y-
+module conn_data_y(ix, iy, iz, side_pos) {
+  g = 12;
+  
+  t = 1;
+  conn_size = 3;
+  hole_size = conn_size + 0.2 * 2;
+  
+  translate([ix * g, iy * g, iz * g])
+  scale([1, side_pos ? -1 : 1, 1])
+  difference() {
+    cube([g, t, g]);
+    
+    translate([g / 2, 0, g / 2])
+    cube([hole_size, t * 3, hole_size], center=true);
+  }
+}
+
 module conn_pwr_y(ix, iy, iz, side_pos) {
   g = 12;
   t = 1;
