@@ -78,17 +78,18 @@ module conn_pwr_y(ix, iy, iz, side_pos) {
 }
 
 
-
 // 3d print friendly hole (YZ plane)
 // center=ffalse: x in [0, t]
 // center=true: x in [-t/2, t/2]
 module hole_x(d, t, center=true, layer=0.3) {
-  translate([center ? 0 : t/2, 0, 0])
+  eps = 0.05; // to remove hole removal artifact
+  
+  translate([center ? 0 : t/2 - eps, 0, 0])
   union() {
     rotate(90, [0, 1, 0])
-    cylinder(h=t, d=d, center=true);
+    cylinder(h=t + eps*2, d=d, center=true);
     
-    cube([t, layer*3, d+layer*2], center=true);
+    cube([t + eps*2, layer*3, d+layer*2], center=true);
   }
 }
 
