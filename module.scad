@@ -1,6 +1,6 @@
-module base_module(nx=2, ny=2, nz=1) {
-  g = 12;
+g = 12;
 
+module base_module(nx=2, ny=2, nz=1) {
   // base layer
   translate([0, 0, 0])
   cube([g * nx, g * ny, 0.8]); // 0.2+ 0.3n
@@ -45,8 +45,6 @@ module base_module(nx=2, ny=2, nz=1) {
 
 // side_pos: true:X+ / false:X-
 module conn_data_x(ix, iy, iz, side_pos) {
-  g = 12;
-  
   t = 1;
   conn_size = 3;
   hole_size = conn_size + 0.2 * 2;
@@ -63,8 +61,6 @@ module conn_data_x(ix, iy, iz, side_pos) {
 
 // side_pos: true:Y+ / false:Y-
 module conn_data_y(ix, iy, iz, side_pos) {
-  g = 12;
-  
   t = 1;
   conn_size = 3;
   hole_size = conn_size + 0.2 * 2;
@@ -80,7 +76,6 @@ module conn_data_y(ix, iy, iz, side_pos) {
 }
 
 module conn_pwr_y(ix, iy, iz, side_pos) {
-  g = 12;
   t = 1;
   conn_size = 3;
   hole_size = conn_size + 0.3 * 2;

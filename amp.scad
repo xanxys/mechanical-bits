@@ -4,8 +4,14 @@ use <./module.scad>;
 
 $fs = 0.2;
 
-margin = 0.35;
-gearmod = 0.8;
+g = 12;
+
+// module state
+st_i = 1.5; // [0, 3]
+st_o = 1.5; // [0, 3]
+
+st_ax_s = st_i - 1.5; // [-1.5, 1.5]
+st_cage_sh = st_o * 2 - 3; // [-3, 3]
 
 
 base_module();
@@ -15,41 +21,41 @@ conn_pwr_y(1, 0, 0, false);
 
 
 // i-axis
-translate([12 * 0.5, 0, 12 * 0.5])
+translate([g * 0.5, 0, g * 0.5])
 cube([3, 8, 3], center=true);
 
 // o-axis
-translate([24, 12 * 1.5, 12 * 0.5])
+translate([24, g * 1.5, g * 0.5])
 cube([8, 3, 3], center=true);
 
 // pwr-axis
-translate([12 + 6, -1, 6])
+translate([g * 1.5, -1, 6])
 rotate(90, [1, 0, 0])
 cylinder(h=6, d=3, center=true);
 
 // pwr-axis stopper
-translate([12 + 6, 1.7, 6])
+translate([g * 1.5, 1.7, 6])
 cube([6, 0.9, 0.9], center=true);
 
 // pwr-axis (internal) center holder
-translate([12 + 6, 12 + 3.1, 6])
+translate([g * 1.5, g + 3.1, 6])
 difference() {
-  cube([6, 1.2, 12], center=true);
+  cube([6, 1.2, g], center=true);
   hole_y(d=2.4, t=2, center=true);
 }
 
 // pwr-axis (internal) d=2
-translate([12 + 6, 8, 6])
+translate([g + 6, 8, 6])
 rotate(90, [1, 0, 0])
 cylinder(h=15.3, d=2.1, center=true);
 
 // pwr-axis (internal) stopper
-translate([12 + 6, 13.7, 6])
+translate([g + 6, 13.7, 6])
 cube([4.5, 0.9, 0.9], center=true);
 
 
 
-translate([12 * 1.5, 8, 12 * 0.5])
+translate([g * 1.5, 8, g * 0.5])
 rotate(90, [0, 0, 1])
 power_axis_redir();
   
@@ -69,7 +75,7 @@ module power_axis_redir() {
     cube([10.5, 9, 5], center=true);
     
     // space for input axis
-    hole_x(d=2.4, t=12, center=true);
+    hole_x(d=2.4, t=g, center=true);
     
     // space for output axis
     translate([0.3, 4, 0])
@@ -82,7 +88,7 @@ module power_axis_redir() {
   // output axis
   translate([3, 4, 0])
   rotate(90, [-1, 0, 0])
-  cylinder(h=12, d=2.1);
+  cylinder(h=g, d=2.1);
 
   // output cage stopper
   translate([3, 7.5, 0])
@@ -95,15 +101,15 @@ module power_axis_redir() {
 
 }
 
-// Y: [-3, 3]
-  translate([0, -3, 0]) // cage shift
+// cage
+translate([0, st_cage_sh, 0])
 translate([3, 11, 4])
 rotate(90, [0, 0, 1])
 rotate(90, [1, 0, 0])
 rack_cage();
 
-// pinion (Z: [-1.5, 1.5]
- //translate([0, 0, 1.5]) // axis shift
+// pinion
+translate([0, 0, st_ax_s])
 translate([3, 11 , 4])
 rotate(90, [0, 0, 1])
 rotate(90, [1, 0, 0])
@@ -112,7 +118,7 @@ pinion();
 // rack-oaxis
 translate([6, 10, 2])
 rotate(-27, [0, 0, 1])
-cube([3, 12, 1]);
+cube([3, g, 1]);
 
 // iaxis -> cage shifter
 translate([8, 6, 9])
