@@ -14,13 +14,14 @@ st_ax_s = st_i - 1.5; // [-1.5, 1.5]
 st_cage_sh = st_o * 2 - 3; // [-3, 3]
 
 
+////////////////////////////////////////////////////////////////////////////////
+// Module surface
 base_module();
 conn_data_y(0, 0, 0, false);
 conn_data_x(2, 1, 0, true);
 conn_pwr_y(1, 0, 0, false);
 
-
-// i-axis
+// i-shaft
 translate([g * 0.5, st_i, g * 0.5])
 translate([-1.5, 0, -1.5])
 union() {
@@ -36,7 +37,7 @@ union() {
 }
 
 
-// o-axis
+// o-shaft
 translate([g * 2 + st_o, g * 1.5, g * 0.5])
 translate([0, -1.5, -1.5])
 union() {
@@ -52,7 +53,7 @@ union() {
 }
 
 
-// pwr-axis
+// p-shaft
 translate([g * 1.5, 0, g / 2])
 rotate(90, [1, 0, 0])
 union() {
@@ -68,32 +69,35 @@ union() {
 }
 
 
-// pwr-axis stopper
+////////////////////////////////////////////////////////////////////////////////
+// Module Internal
+
+// p-shaft stopper
 translate([g * 1.5, 1.7, 6])
 cube([6, 0.9, 0.9], center=true);
 
-// pwr-axis (internal) center holder
+// p-shaft (internal) center holder
 translate([g * 1.5, g + 3.1, 6])
 difference() {
   cube([6, 1.2, g], center=true);
   hole_y(d=2.4, t=2, center=true);
 }
 
-// pwr-axis (internal) d=2
+// p-shaft (internal) d=2
 translate([g + 6, 8, 6])
 rotate(90, [1, 0, 0])
 cylinder(h=15.3, d=2.1, center=true);
 
-// pwr-axis (internal) stopper
+// p-shaft (internal) stopper
 translate([g + 6, 16, 6])
 cube([4.5, 0.9, 0.9], center=true);
 
 
 translate([g * 1.5, 8, g * 0.5])
 rotate(90, [0, 0, 1])
-power_axis_redir();
+p_shaft_redir();
   
-module power_axis_redir() {
+module p_shaft_redir() {
   gearmod = 1.5;
   
   // input gear
@@ -112,15 +116,15 @@ module power_axis_redir() {
       cube([3.8, 8, 5], center=true);
     }
     
-    // space for input axis
+    // space for input shaft
     hole_x(d=2.4, t=g, center=true);
     
-    // space for output axis
+    // space for output shaft
     translate([3, 4, 0])
     hole_y(d=2.4, t=10, center=true);
   }
 
-  // output axis
+  // output shaft
   translate([3, 4, 0])
   rotate(90, [-1, 0, 0])
   cylinder(h=g, d=2.1);
@@ -150,12 +154,12 @@ rotate(90, [0, 0, 1])
 rotate(90, [1, 0, 0])
 pinion();
 
-// rack-oaxis
+// rack -> o-shaft
 translate([6, 10, 2])
 rotate(-27, [0, 0, 1])
 cube([3, g, 1]);
 
-// iaxis -> cage shifter
+// i-shaft -> cage shifter
 translate([8, 6, 9])
 rotate(90, [0, 0, 1])
 rotate(45, [0, 1, 0])
