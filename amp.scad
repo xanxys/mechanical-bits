@@ -44,7 +44,7 @@ translate([g * 2 + st_o, g * 1.5, g * 0.5])
 translate([0, -1.5, -1.5])
 union() {
   len_ext = 1;
-  len_int = 8;
+  len_int = 22;
   
   // external
   cube([len_ext, 3, 3]);
@@ -74,6 +74,12 @@ union() {
 ////////////////////////////////////////////////////////////////////////////////
 // Module Internal
 
+// floor
+cube([g * 2, g * 2, 1.2]);
+
+
+
+// p-shaft
 translate([g * 1.5, 0, g * 0.5])
 rotate(st_p, [0, 1, 0])
 union() {  
@@ -175,9 +181,9 @@ rotate(90, [1, 0, 0])
 rack_cage();
 
 
-// rack -> o-shaft
-translate([6, 10, 2])
-rotate(-27, [0, 0, 1])
+// cage -> o-shaft
+translate([8, 10+st_cage_sh, 1.25])
+rotate(27, [0, 0, 1])
 cube([3, g, 1]);
 
 // i-shaft -> cage shifter
