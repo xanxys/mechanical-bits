@@ -44,7 +44,7 @@ translate([g * 2 + st_o, g * 1.5, g * 0.5])
 translate([0, -1.5, -1.5])
 union() {
   len_ext = 1;
-  len_int = 22;
+  len_int = 5;
   
   // external
   cube([len_ext, 3, 3]);
@@ -181,11 +181,6 @@ rotate(90, [1, 0, 0])
 rack_cage();
 
 
-// cage -> o-shaft
-translate([8, 10+st_cage_sh, 1.25])
-rotate(27, [0, 0, 1])
-cube([3, g, 1]);
-
 // i-shaft -> cage shifter
 translate([6, 9.5 + st_i, g * 0.5])
 rotate(-25, [1, 0, 0])
@@ -193,6 +188,16 @@ difference() {
   cube([1.5, 8, 4.2], center=true);
   cube([1.6, 6, 2.2], center=true);
 }
+
+
+// cage -> o-shaft
+translate([8, 10+st_cage_sh, 1.25])
+rotate(27, [0, 0, 1])
+cube([3, g, 1]);
+
+// o-shaft-aux
+translate([11.5 + st_o, g * 1.5, 3.5])
+cube([18, 3, 2], center=true);
 
 
 
