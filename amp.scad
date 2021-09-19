@@ -187,15 +187,11 @@ rotate(27, [0, 0, 1])
 cube([3, g, 1]);
 
 // i-shaft -> cage shifter
-translate([8, 4.5 + st_i, 9])
-rotate(90, [0, 0, 1])
-rotate(45, [0, 1, 0])
+translate([6, 9.5 + st_i, g * 0.5])
+rotate(-25, [1, 0, 0])
 difference() {  
-  translate([0, 0.5, 0])
-  cube([10, 3, 3]);
-  
-  translate([0.5, -5, 0.5])
-  cube([9, 20, 2]);
+  cube([1.5, 8, 4.2], center=true);
+  cube([1.6, 6, 2.2], center=true);
 }
 
 
