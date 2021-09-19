@@ -11,6 +11,7 @@ st_i = 1.5; // [0, 3]
 st_o = 1.5; // [0, 3]
 
 st_ax_s = st_i - 1.5; // [-1.5, 1.5]
+st_redir_angle = st_ax_s / 25 * (360 / (2 * PI));
 st_cage_sh = st_o * 2 - 3; // [-3, 3]
 
 
@@ -95,8 +96,14 @@ cube([4.5, 0.9, 0.9], center=true);
 
 translate([g * 1.5, 8, g * 0.5])
 rotate(90, [0, 0, 1])
-p_shaft_redir();
+union() {
+  p_shaft_redir();
   
+  rotate(st_redir_angle, [1, 0, 0])
+  p_shaft_redir_rotor();
+}
+
+
 module p_shaft_redir() {
   gearmod = 1.5;
   
@@ -105,8 +112,12 @@ module p_shaft_redir() {
   rotate(90, [0, 1, 0])
   rotate(360 / 4 / 2, [0, 0, 1])
   bevel_gear(gearmod, 4, 45, 2, 0, pressure_angle=5);
+}
 
-  // cage
+module p_shaft_redir_rotor() {
+  gearmod = 1.5;
+
+  // redir-frame
   difference() {
     union() {
       translate([-0.1, 5.8, 0])
@@ -124,20 +135,24 @@ module p_shaft_redir() {
     hole_y(d=2.4, t=10, center=true);
   }
 
-  // output shaft
+  // cage-shaft
   translate([3, 4, 0])
   rotate(90, [-1, 0, 0])
-  cylinder(h=g, d=2.1);
+  cylinder(h=13.5, d=2.1);
 
-  // output cage stopper
-  translate([3, 7.5, 0])
-  cube([4.5, 0.9, 0.9], center=true);
-
-  // output gear
+  // cage-shaft-gear
   translate([3, 4.5, 0])
   rotate(90, [1, 0, 0])
   bevel_gear(gearmod, 4, 45, 2, 0, pressure_angle=5);
 
+  // chage-shaft-stopper
+  translate([3, 7.5, 0])
+  cube([4.5, 0.9, 0.9], center=true); 
+  
+  // cage-pinion
+  translate([3, 15, -2])
+  rotate(90, [1, 0, 0])
+  pinion();
 }
 
 // cage
@@ -147,12 +162,6 @@ rotate(90, [0, 0, 1])
 rotate(90, [1, 0, 0])
 rack_cage();
 
-// pinion
-translate([0, 0, st_ax_s])
-translate([3, 11 , 4])
-rotate(90, [0, 0, 1])
-rotate(90, [1, 0, 0])
-pinion();
 
 // rack -> o-shaft
 translate([6, 10, 2])
@@ -160,7 +169,7 @@ rotate(-27, [0, 0, 1])
 cube([3, g, 1]);
 
 // i-shaft -> cage shifter
-translate([8, 6, 9])
+translate([8, 4.5 + st_i, 9])
 rotate(90, [0, 0, 1])
 rotate(45, [0, 1, 0])
 difference() {  
