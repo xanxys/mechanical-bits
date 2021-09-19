@@ -21,17 +21,52 @@ conn_pwr_y(1, 0, 0, false);
 
 
 // i-axis
-translate([g * 0.5, 0, g * 0.5])
-cube([3, 8, 3], center=true);
+translate([g * 0.5, st_i, g * 0.5])
+translate([-1.5, 0, -1.5])
+union() {
+  len_ext = 4;
+  len_int = 6;
+  
+  // external
+  translate([0, -len_ext, 0])
+  cube([3, len_ext, 3]);
+  
+  // internal
+  cube([3, len_int, 3]);
+}
+
 
 // o-axis
-translate([24, g * 1.5, g * 0.5])
-cube([8, 3, 3], center=true);
+translate([g * 2 + st_o, g * 1.5, g * 0.5])
+translate([0, -1.5, -1.5])
+union() {
+  len_ext = 1;
+  len_int = 8;
+  
+  // external
+  cube([len_ext, 3, 3]);
+  
+  // internal
+  translate([-len_int, 0, 0])
+  cube([len_int, 3, 3]);
+}
+
 
 // pwr-axis
-translate([g * 1.5, -1, 6])
+translate([g * 1.5, 0, g / 2])
 rotate(90, [1, 0, 0])
-cylinder(h=6, d=3, center=true);
+union() {
+  len_ext = 6;
+  len_int = 1.8;
+  
+  // external
+  cylinder(d=3, h=len_ext);
+  
+  // internal
+  translate([0, 0, -len_int])
+  cylinder(d=3, h=len_int);
+}
+
 
 // pwr-axis stopper
 translate([g * 1.5, 1.7, 6])
@@ -50,9 +85,8 @@ rotate(90, [1, 0, 0])
 cylinder(h=15.3, d=2.1, center=true);
 
 // pwr-axis (internal) stopper
-translate([g + 6, 13.7, 6])
+translate([g + 6, 16, 6])
 cube([4.5, 0.9, 0.9], center=true);
-
 
 
 translate([g * 1.5, 8, g * 0.5])
@@ -69,20 +103,21 @@ module power_axis_redir() {
   bevel_gear(gearmod, 4, 45, 2, 0, pressure_angle=5);
 
   // cage
-  translate([-0.3 + 3, 0, 0])
   difference() {
-    translate([0, 2, 0])
-    cube([10.5, 9, 5], center=true);
+    union() {
+      translate([-0.1, 5.8, 0])
+      cube([11, 2, 5], center=true);
+      
+      translate([-3.7, 1, 0])
+      cube([3.8, 8, 5], center=true);
+    }
     
     // space for input axis
     hole_x(d=2.4, t=g, center=true);
     
     // space for output axis
-    translate([0.3, 4, 0])
+    translate([3, 4, 0])
     hole_y(d=2.4, t=10, center=true);
-    
-    // space for gears
-    cube([8.9, 9.8, 6], center=true);
   }
 
   // output axis
