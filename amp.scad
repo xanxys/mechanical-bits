@@ -9,6 +9,7 @@ g = 12;
 // module state
 st_i = 1.5; // [0, 3]
 st_o = 1.5; // [0, 3]
+st_p = 0; // [0, 360]
 
 st_ax_s = st_i - 1.5; // [-1.5, 1.5]
 st_redir_angle = st_ax_s / 25 * (360 / (2 * PI));
@@ -73,9 +74,22 @@ union() {
 ////////////////////////////////////////////////////////////////////////////////
 // Module Internal
 
-// p-shaft stopper
-translate([g * 1.5, 1.7, 6])
-cube([6, 0.9, 0.9], center=true);
+translate([g * 1.5, 0, g * 0.5])
+rotate(st_p, [0, 1, 0])
+union() {  
+  // p-shaft stopper
+  translate([0, 1.7, 0])
+  cube([6, 0.9, 0.9], center=true);
+
+  // p-shaft (internal) d=2
+  translate([0, 8, 0])
+  rotate(90, [1, 0, 0])
+  cylinder(h=15.3, d=2.1, center=true);
+
+  translate([0, 8, 0])
+  rotate(90, [0, 0, 1])  
+  p_shaft_redir();
+}
 
 // p-shaft (internal) center holder
 translate([g * 1.5, g + 3.1, 6])
@@ -83,11 +97,6 @@ difference() {
   cube([6, 1.2, g], center=true);
   hole_y(d=2.4, t=2, center=true);
 }
-
-// p-shaft (internal) d=2
-translate([g + 6, 8, 6])
-rotate(90, [1, 0, 0])
-cylinder(h=15.3, d=2.1, center=true);
 
 // p-shaft (internal) stopper
 translate([g + 6, 16, 6])
@@ -97,8 +106,6 @@ cube([4.5, 0.9, 0.9], center=true);
 translate([g * 1.5, 8, g * 0.5])
 rotate(90, [0, 0, 1])
 union() {
-  p_shaft_redir();
-  
   rotate(st_redir_angle, [1, 0, 0])
   p_shaft_redir_rotor();
 }
@@ -136,23 +143,28 @@ module p_shaft_redir_rotor() {
   }
 
   // cage-shaft
-  translate([3, 4, 0])
-  rotate(90, [-1, 0, 0])
-  cylinder(h=13.5, d=2.1);
+  translate([3, 0, 0])
+  rotate(st_p - st_redir_angle, [0, 1, 0])
+  union() {
+    // shaft
+    translate([0, 4, 0])
+    rotate(90, [-1, 0, 0])
+    cylinder(h=13.5, d=2.1);
 
-  // cage-shaft-gear
-  translate([3, 4.5, 0])
-  rotate(90, [1, 0, 0])
-  bevel_gear(gearmod, 4, 45, 2, 0, pressure_angle=5);
+    // cage-shaft-gear
+    translate([0, 4.5, 0])
+    rotate(90, [1, 0, 0])
+    bevel_gear(gearmod, 4, 45, 2, 0, pressure_angle=5);
 
-  // chage-shaft-stopper
-  translate([3, 7.5, 0])
-  cube([4.5, 0.9, 0.9], center=true); 
-  
-  // cage-pinion
-  translate([3, 15, -2])
-  rotate(90, [1, 0, 0])
-  pinion();
+    // chage-shaft-stopper
+    translate([0, 7.5, 0])
+    cube([4.5, 0.9, 0.9], center=true); 
+    
+    // cage-pinion
+    translate([0, 15, -2])
+    rotate(90, [1, 0, 0])
+    pinion();
+  }
 }
 
 // cage
