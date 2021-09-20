@@ -169,7 +169,7 @@ module p_shaft_redir_rotor() {
     cube([4.5, 0.9, 0.9], center=true); 
     
     // cage-pinion
-    translate([0, 15, -2])
+    translate([0, 15.2, -2])
     rotate(90, [1, 0, 0])
     pinion();
   }
@@ -189,13 +189,20 @@ rotate(90, [0, 0, 1])
 rotate(90, [1, 0, 0])
 rack_cage();
 
-
-// i-shaft -> cage shifter
-translate([6, 9.5 + st_i, g * 0.5])
-rotate(25, [1, 0, 0])
-difference() {  
-  cube([1.5, 8, 4.2], center=true);
-  cube([1.6, 6, 2.2], center=true);
+// i-shaft internal
+translate([g * 0.5, st_i, g * 0.5])
+union() {
+  // i-shaft -> cage shifter
+  translate([0, 9.5, 0])
+  rotate(25, [1, 0, 0])
+  difference() {  
+    cube([1.5, 8, 4.2], center=true);
+    cube([1.6, 6, 2.2], center=true);
+  }
+  
+  // i-shaft other end
+  translate([0, 16, 0])
+  cube([2, 7, 2], center=true);
 }
 
 
@@ -223,27 +230,27 @@ module rack_cage() {
   
   // 0 rack (bottom)
   translate([-2, -1, 0])
-  rack(gm, 6, 1.5, 2, pressure_angle=5, helix_angle=0);
+  rack(gm, 6, 1.5, 1.2, pressure_angle=5, helix_angle=0);
 
   // 1 rack (top)
   translate([2, 1, 0])
   translate([0, 4, 0])
   scale([1, -1, 1])
-  rack(gm, 6, 1.5, 2, pressure_angle=5, helix_angle=0);
+  rack(gm, 6, 1.5, 1.2, pressure_angle=5, helix_angle=0);
   
   // 0 rack rail
   translate([-5.5, 5.75, 0])
-  cube([11, 1, 2]);
+  cube([11, 1, 1.2]);
   
   // 1 rack rail
   translate([-5.5, -2.75, 0])
-  cube([11, 1, 2]);
+  cube([11, 1, 1.2]);
 }
 
 module pinion() {
   n = 4;
   pin_w = 1.4;
-  pin_t = 2;
+  pin_t = 1.5;
   pin_l = 2.1;
   translate([0, 0, 0])
   translate([0, 2, 0])
