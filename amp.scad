@@ -12,8 +12,8 @@ st_o = 1.5; // [0, 3]
 st_p = 0; // [0, 360]
 
 st_ax_s = st_i - 1.5; // [-1.5, 1.5]
-st_redir_angle = st_ax_s / 25 * (360 / (2 * PI));
-st_cage_sh = st_o * 2 - 3; // [-3, 3]
+st_redir_angle = - st_ax_s / 25 * (360 / (2 * PI));
+st_cage_sh = 3 - st_o * 2; // [-3, 3]
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -86,27 +86,29 @@ union() {
   // p-shaft stopper
   translate([0, 1.7, 0])
   cube([6, 0.9, 0.9], center=true);
+  
+  // p-shaft stopper 2
+  translate([0, 20.7, 0])
+  cube([5, 0.9, 0.9], center=true);
 
   // p-shaft (internal) d=2
-  translate([0, 8, 0])
+  translate([0, 10, 0])
   rotate(90, [1, 0, 0])
-  cylinder(h=15.3, d=2.1, center=true);
+  cylinder(h=25, d=2.1, center=true);
 
   translate([0, 8, 0])
   rotate(90, [0, 0, 1])  
   p_shaft_redir();
 }
 
-// p-shaft (internal) center holder
-translate([g * 1.5, g + 3.1, 6])
+// p-shaft (internal) end holder
+translate([g * 1.5, g * 2 - 2, g * 0.5])
 difference() {
   cube([6, 1.2, g], center=true);
   hole_y(d=2.4, t=2, center=true);
 }
 
-// p-shaft (internal) stopper
-translate([g + 6, 16, 6])
-cube([4.5, 0.9, 0.9], center=true);
+
 
 
 translate([g * 1.5, 8, g * 0.5])
@@ -173,6 +175,13 @@ module p_shaft_redir_rotor() {
   }
 }
 
+// c-shaft limiter
+translate([1.5, 11, 6])
+difference() {
+  cube([2, 4, g], center=true);
+  cube([2.1, 2.4, 4.5], center=true);
+}
+
 // cage
 translate([0, st_cage_sh, 0])
 translate([3, 11, 4])
@@ -183,7 +192,7 @@ rack_cage();
 
 // i-shaft -> cage shifter
 translate([6, 9.5 + st_i, g * 0.5])
-rotate(-25, [1, 0, 0])
+rotate(25, [1, 0, 0])
 difference() {  
   cube([1.5, 8, 4.2], center=true);
   cube([1.6, 6, 2.2], center=true);
@@ -191,13 +200,19 @@ difference() {
 
 
 // cage -> o-shaft
-translate([8, 10+st_cage_sh, 1.25])
-rotate(27, [0, 0, 1])
+translate([6, 12+st_cage_sh, 1.25])
+rotate(-27, [0, 0, 1])
 cube([3, g, 1]);
 
 // o-shaft-aux
-translate([11.5 + st_o, g * 1.5, 3.5])
-cube([18, 3, 2], center=true);
+translate([st_o, g * 1.5, 0])
+union() {
+  translate([6, -2, 3])
+  cube([3, 8, 1], center=true);
+  
+  translate([11.5, 0, 3.5])
+  cube([18, 3, 2], center=true);
+}
 
 
 
@@ -223,14 +238,6 @@ module rack_cage() {
   // 1 rack rail
   translate([-5.5, -2.75, 0])
   cube([11, 1, 2]);
-  
-  // vertical rod (Y-)
-  translate([-5.5, -2.75, -0.8])
-  cube([3, 9.5, 0.8]);
-  
-  // vertical rod (Y+)
-  translate([2.5, -2.75, -0.8])
-  cube([3, 9.5, 0.8]);
 }
 
 module pinion() {
