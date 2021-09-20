@@ -44,7 +44,7 @@ translate([g * 2 + st_o, g * 1.5, g * 0.5])
 translate([0, -1.5, -1.5])
 union() {
   len_ext = 1;
-  len_int = 5;
+  len_int = 4;
   
   // external
   cube([len_ext, 3, 3]);
@@ -207,12 +207,23 @@ union() {
   cube([1, 8, 3], center=true);
 }
 
+
 // i-shaft holder
 translate([g / 2, g * 2 - 3, g / 2])
 difference() {
-  cube([3.3, 2, g], center=true);
-  cube([1.3, 2.1, 3.3], center=true);
+  cube([3, 2, g], center=true);
+  cube([1.3, 2.1, 3.6], center=true);
 }
+
+// o-shaft holder
+difference() {
+  translate([4.5, g + 3.7, 0])
+  cube([1.5, 5, 4.2]);
+  
+  translate([4.4, g + 4.3, 2.3])
+  cube([1.7, 3.4, 1.4]);
+}
+
 
 
 // cage -> o-shaft
@@ -235,8 +246,8 @@ union() {
   translate([9, -2, 3])
   cube([2, 5, 1], center=true);
   
-  translate([15, 0, 3])
-  cube([16, 3, 1], center=true);
+  translate([1, -1.5, 2.5])
+  cube([20, 3, 1]);
   
   translate([9, -3.5, 1.4])
   cylinder(d=2, h=2);
