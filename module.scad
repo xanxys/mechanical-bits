@@ -111,3 +111,18 @@ module hole_y(d, t, center=true, layer=0.3) {
   hole_x(d, t, center, layer);
 }
 
+
+// long hole (X: free direction, Z: axis)
+// centered at origin
+module long_hole(d, l, t) {
+  eps = 0.05;  // reduce artifact
+  
+  cube([l, d, t+eps*2], center=true);
+  
+  translate([-l/2, 0, 0])
+  cylinder(d=d, h=t+eps*2, center=true);
+  
+  translate([l/2, 0, 0])
+  cylinder(d=d, h=t+eps*2, center=true);
+}
+

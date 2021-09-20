@@ -135,8 +135,8 @@ module p_shaft_redir_rotor() {
   // redir-frame
   difference() {
     union() {
-      translate([-0.1, 5.8, 0])
-      cube([11, 2, 5], center=true);
+      translate([-0.2, 5.8, 0])
+      cube([10.8, 2, 5], center=true);
       
       translate([-3.7, 1, 0])
       cube([3.8, 8, 5], center=true);
@@ -164,9 +164,9 @@ module p_shaft_redir_rotor() {
     rotate(90, [1, 0, 0])
     bevel_gear(gearmod, 4, 45, 2, 0, pressure_angle=5);
 
-    // chage-shaft-stopper
+    // cage-shaft-stopper
     translate([0, 7.5, 0])
-    cube([4.5, 0.9, 0.9], center=true); 
+    cube([4, 0.9, 0.9], center=true); 
     
     // cage-pinion
     translate([0, 15.2, -2])
@@ -194,31 +194,52 @@ translate([g * 0.5, st_i, g * 0.5])
 union() {
   // i-shaft -> cage shifter
   translate([0, 9.5, 0])
-  rotate(25, [1, 0, 0])
+  rotate(90+25, [1, 0, 0])
+  rotate(90, [0, 1, 0])
   difference() {  
-    cube([1.5, 8, 4.2], center=true);
-    cube([1.6, 6, 2.2], center=true);
+    cube([8, 4.2, 1.5], center=true);
+    long_hole(d=2.2, l=3.5, t=1.5);
+    
   }
   
   // i-shaft other end
-  translate([0, 16, 0])
-  cube([2, 7, 2], center=true);
+  translate([0, 16.5, 0])
+  cube([1, 8, 3], center=true);
+}
+
+// i-shaft holder
+translate([g / 2, g * 2 - 3, g / 2])
+difference() {
+  cube([3.3, 2, g], center=true);
+  cube([1.3, 2.1, 3.3], center=true);
 }
 
 
 // cage -> o-shaft
-translate([6, 12+st_cage_sh, 1.25])
-rotate(-27, [0, 0, 1])
-cube([3, g, 1]);
+translate([10.5, 14.5+st_cage_sh, 1.9])
+difference() {
+  rotate(90-27, [0, 0, 1])
+  difference() {
+    cube([11, 4.3, 1], center=true);
+    long_hole(d=2.3, l=7, t=1);
+  }
+  
+  translate([1, 7.1, 0])
+  cube([4, 4, 1.1], center=true);
+}
+
 
 // o-shaft-aux
 translate([st_o, g * 1.5, 0])
 union() {
-  translate([6, -2, 3])
-  cube([3, 8, 1], center=true);
+  translate([9, -2, 3])
+  cube([2, 5, 1], center=true);
   
-  translate([11.5, 0, 3.5])
-  cube([18, 3, 2], center=true);
+  translate([15, 0, 3])
+  cube([16, 3, 1], center=true);
+  
+  translate([9, -3.5, 1.4])
+  cylinder(d=2, h=2);
 }
 
 
