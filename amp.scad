@@ -216,6 +216,10 @@ difference() {
 // i-shaft internal
 translate([g * 0.5, st_i, g * 0.5])
 union() {
+  // stopper (0)
+  translate([0, 1.5, 0])
+  cube([3, 0.9, 4.8], center=true);
+  
   // i-shaft -> cage shifter
   translate([0, 9.5, 0])
   rotate(90+25, [1, 0, 0])
@@ -229,11 +233,15 @@ union() {
   // i-shaft other end
   translate([0, 16.5, 0])
   cube([1, 8, 3], center=true);
+  
+  // stopper (1)
+  translate([0, 15, 0])
+  cube([1, 0.9, 4.8], center=true);
 }
 
 
 // i-shaft holder
-translate([g / 2, g * 2 - 3, g / 2])
+translate([g / 2, g * 2 - 4.5, g / 2])
 difference() {
   cube([3, 2, g], center=true);
   cube([1.3, 2.1, 3.6], center=true);
