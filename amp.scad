@@ -216,11 +216,12 @@ difference() {
 }
 
 // o-shaft holder
+translate([11, g, 0])
 difference() {
-  translate([4.5, g + 3.7, 0])
+  translate([4.5, 3.7, 0])
   cube([1.5, 5, 4.2]);
   
-  translate([4.4, g + 4.3, 2.3])
+  translate([4.4, 4.3, 2.3])
   cube([1.7, 3.4, 1.4]);
 }
 
@@ -228,15 +229,21 @@ difference() {
 
 // cage -> o-shaft
 translate([10.5, 14.5+st_cage_sh, 1.9])
-difference() {
-  rotate(90-27, [0, 0, 1])
-  difference() {
-    cube([11, 4.3, 1], center=true);
-    long_hole(d=2.3, l=7, t=1);
-  }
+union() {
+  translate([-5, -3, 0])
+  cube([3, 5, 1], center=true);
   
-  translate([1, 7.1, 0])
-  cube([4, 4, 1.1], center=true);
+  difference() {
+    rotate(90-27, [0, 0, 1])
+    difference() {
+      cube([11, 4.3, 1], center=true);
+      long_hole(d=2.3, l=7, t=1);
+    }
+    
+    // cut corners
+    translate([1, 7.1, 0])
+    cube([4, 4, 1.1], center=true);
+  }
 }
 
 
@@ -246,8 +253,8 @@ union() {
   translate([9, -2, 3])
   cube([2, 5, 1], center=true);
   
-  translate([1, -1.5, 2.5])
-  cube([20, 3, 1]);
+  translate([8, -1.5, 2.5])
+  cube([13, 3, 1]);
   
   translate([9, -3.5, 1.4])
   cylinder(d=2, h=2);
