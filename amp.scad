@@ -236,7 +236,7 @@ union() {
   
   // stopper (1)
   translate([0, 15, 0])
-  cube([1, 0.9, 4.8], center=true);
+  cube([2.8, 0.9, 3], center=true);
 }
 
 
