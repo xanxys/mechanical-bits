@@ -18,10 +18,12 @@ st_cage_sh = 3 - st_o * 2; // [-3, 3]
 
 ////////////////////////////////////////////////////////////////////////////////
 // Module surface
-base_module();
+
+base_module(pad=false);
 conn_data_y(0, 0, 0, false);
 conn_data_x(2, 1, 0, true);
 conn_pwr_y(1, 0, 0, false);
+
 
 // i-shaft
 translate([g * 0.5, st_i, g * 0.5])
@@ -189,6 +191,16 @@ rotate(90, [0, 0, 1])
 rotate(90, [1, 0, 0])
 rack_cage();
 
+// cage stopper
+translate([0, 21, 0])
+cube([4.5, 3, g]);
+
+// cage rail (top)
+translate([0, 0, g - 1.2])
+cube([7, g * 2, 1.2]);
+
+
+
 // i-shaft internal
 translate([g * 0.5, st_i, g * 0.5])
 union() {
@@ -284,6 +296,14 @@ module rack_cage() {
   // 1 rack rail
   translate([-5.5, -2.75, 0])
   cube([11, 1, 1.2]);
+  
+  // vertical rod 1
+  translate([-7, -2.75, 0])
+  cube([1.5, 9.5, 1.2]);
+  
+  // vertical rod 2
+  translate([5.5, -2.75, 0])
+  cube([1.5, 9.5, 1.2]);
 }
 
 module pinion() {

@@ -1,6 +1,6 @@
 g = 12;
 
-module base_module(nx=2, ny=2, nz=1) {
+module base_module(nx=2, ny=2, nz=1, pad=true) {
   // base layer
   translate([0, 0, 0])
   cube([g * nx, g * ny, 0.8]); // 0.2+ 0.3n
@@ -9,26 +9,28 @@ module base_module(nx=2, ny=2, nz=1) {
   str_w = 1.8; // module structural pillar half size
   str_t = 1.2; // structural interface internal thickness
   
-  intersection() {
-    difference() {
-      for (ix = [0:nx]) {
-        for (iy = [0:ny]) {
-          for (iz = [0:nz]) {
-            if (ix == 0 || iy == 0 || iz == 0 || ix == nx || iy == ny || iz == nz) {
-              translate([ix * g, iy *g, iz * g])
-              cube([str_w * 2, str_w * 2, str_w * 2], center=true);
+  if(pad) {
+    intersection() {
+      difference() {
+        for (ix = [0:nx]) {
+          for (iy = [0:ny]) {
+            for (iz = [0:nz]) {
+              if (ix == 0 || iy == 0 || iz == 0 || ix == nx || iy == ny || iz == nz) {
+                translate([ix * g, iy *g, iz * g])
+                cube([str_w * 2, str_w * 2, str_w * 2], center=true);
+              }
             }
           }
         }
+        // remove internal space (leaving str_t)
+        translate([str_t, str_t, str_t])
+        cube([nx * g - str_t * 2, ny * g - str_t * 2, nz * g - str_t * 2]);
       }
-      // remove internal space (leaving str_t)
-      translate([str_t, str_t, str_t])
-      cube([nx * g - str_t * 2, ny * g - str_t * 2, nz * g - str_t * 2]);
+      
+      // limit to module size
+      cube([nx * g, ny * g, nz * g]);
     }
-    
-    // limit to module size
-    cube([nx * g, ny * g, nz * g]);
-  }
+  }  
   
   // pillars
   cube([str_w, str_w, g]);
