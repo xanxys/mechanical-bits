@@ -91,11 +91,11 @@ union() {
   cube([6, 0.9, 0.9], center=true);
   
   // p-shaft stopper 2
-  translate([0, 20.7, 0])
+  translate([0, 21.7, 0])
   cube([5, 0.9, 0.9], center=true);
 
   // p-shaft (internal) d=2
-  translate([0, 10, 0])
+  translate([0, 11, 0])
   rotate(90, [1, 0, 0])
   cylinder(h=25, d=2.1, center=true);
 
@@ -105,7 +105,7 @@ union() {
 }
 
 // p-shaft (internal) end holder
-translate([g * 1.5, g * 2 - 2, g * 0.5])
+translate([g * 1.5, g * 2 - 1, g * 0.5])
 difference() {
   cube([6, 1.2, g], center=true);
   hole_y(d=2.4, t=2, center=true);
@@ -279,15 +279,22 @@ union() {
 }
 
 
-// o-shaft-aux
+// o-shaft internal
 translate([st_o, g * 1.5, 0])
 union() {
+  // stopper (1) & connector
+  translate([19.1, -1.5, 3.4])
+  cube([0.9, 3, 5]);
+  
+  // shaft
+  translate([8, -1.5, 2.5])
+  cube([12, 3, 1]);
+  
+  // shaft-sub
   translate([9, -2, 3])
   cube([2, 5, 1], center=true);
   
-  translate([8, -1.5, 2.5])
-  cube([13, 3, 1]);
-  
+  // pin
   translate([9, -3.5, 1.4])
   cylinder(d=2, h=2);
 }
