@@ -76,8 +76,9 @@ union() {
 ////////////////////////////////////////////////////////////////////////////////
 // Module Internal
 
-// floor
-cube([g * 2, g * 2, 1.2]);
+// floor partial
+translate([7, 0, 0])
+cube([g * 2 - 7, g * 2, 1.2]);
 
 
 
@@ -195,10 +196,21 @@ rack_cage();
 translate([0, 21, 0])
 cube([4.5, 3, g]);
 
-// cage rail (top)
-translate([0, 0, g - 1.2])
-cube([7, g * 2, 1.2]);
+// cage rails
+difference() {
+  union() {
+    // cage rail (top)
+    translate([0, 0, g - 1.2])
+    cube([7, g * 2, 1.2]);
 
+    // cage rail (bottom)
+    translate([0, 0, 0])
+    cube([7, g * 2, 1.2]);
+  }
+  
+  translate([2.7, 0, 0.5])
+  cube([1.8, 21, g - 0.5*2]);
+}
 
 
 // i-shaft internal
@@ -291,19 +303,19 @@ module rack_cage() {
   
   // 0 rack rail
   translate([-5.5, 5.75, 0])
-  cube([11, 1, 1.2]);
+  cube([11, 1.5, 1.2]);
   
   // 1 rack rail
-  translate([-5.5, -2.75, 0])
-  cube([11, 1, 1.2]);
+  translate([-5.5, -2.75-0.5, 0])
+  cube([11, 1.5, 1.2]);
   
   // vertical rod 1
-  translate([-7, -2.75, 0])
-  cube([1.5, 9.5, 1.2]);
+  translate([-7, -3.25, 0])
+  cube([1.5, 10.5, 1.2]);
   
   // vertical rod 2
-  translate([5.5, -2.75, 0])
-  cube([1.5, 9.5, 1.2]);
+  translate([5.5, -3.25, 0])
+  cube([1.5, 10.5, 1.2]);
 }
 
 module pinion() {

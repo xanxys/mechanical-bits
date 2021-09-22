@@ -2,8 +2,8 @@ g = 12;
 
 module base_module(nx=2, ny=2, nz=1, pad=true) {
   // base layer
-  translate([0, 0, 0])
-  cube([g * nx, g * ny, 0.8]); // 0.2+ 0.3n
+  //translate([0, 0, 0])
+  //cube([g * nx, g * ny, 0.8]); // 0.2+ 0.3n
   
   // structural interface
   str_w = 1.8; // module structural pillar half size
