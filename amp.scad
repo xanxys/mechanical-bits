@@ -186,8 +186,7 @@ difference() {
 }
 
 // cage
-translate([0, st_cage_sh, 0])
-translate([3, 11, 4])
+translate([3.5, 11+st_cage_sh, g/2])
 rotate(90, [0, 0, 1])
 rotate(90, [1, 0, 0])
 rack_cage();
@@ -208,8 +207,16 @@ difference() {
     cube([7, g * 2, 1.2]);
   }
   
-  translate([2.7, 0, 0.5])
-  cube([1.8, 21, g - 0.5*2]);
+  translate([3.5, 11, g/2])
+  union() {
+    // sliding margin
+    translate([0, 0, 0])
+    cube([1.8, 21, g - 1], center=true);
+    
+    // support removal & debug window
+    translate([0, 0, 0])
+    cube([0.8, 21, g + 0.2], center=true);
+  }
 }
 
 
@@ -301,36 +308,39 @@ union() {
 
 
 
-
+// X: sliding direction, Y: pinion input shift direction, Z: fixed
+// cage is centered at origin
 module rack_cage() {
   gm = 0.7;
   tr = 6;
   
+  thickness = 1.2; // = z size
+  h = 10.5; // = Y size
+  
   // 0 rack (bottom)
-  translate([-2, -1, 0])
-  rack(gm, 6, 1.5, 1.2, pressure_angle=5, helix_angle=0);
+  translate([-2, -3, -thickness/2])
+  rack(gm, 6, 1.5, thickness, pressure_angle=5, helix_angle=0);
 
   // 1 rack (top)
-  translate([2, 1, 0])
-  translate([0, 4, 0])
+  translate([2, 3, -thickness/2])
   scale([1, -1, 1])
-  rack(gm, 6, 1.5, 1.2, pressure_angle=5, helix_angle=0);
+  rack(gm, 6, 1.5, thickness, pressure_angle=5, helix_angle=0);
   
-  // 0 rack rail
-  translate([-5.5, 5.75, 0])
-  cube([11, 1.5, 1.2]);
+  // rack rail (Y-)
+  translate([0, -4.5, 0])
+  cube([11, 1.5, thickness], center=true);
   
-  // 1 rack rail
-  translate([-5.5, -2.75-0.5, 0])
-  cube([11, 1.5, 1.2]);
+  // rack rail (Y+)
+  translate([0, 4.5, 0])
+  cube([11, 1.5, thickness], center=true);
   
-  // vertical rod 1
-  translate([-7, -3.25, 0])
-  cube([1.5, 10.5, 1.2]);
+  // vertical rod (X-)
+  translate([-6.25, 0, 0])
+  cube([1.5, h, thickness], center=true);
   
-  // vertical rod 2
-  translate([5.5, -3.25, 0])
-  cube([1.5, 10.5, 1.2]);
+  // vertical rod (X+)
+  translate([6.25, 0, 0])
+  cube([1.5, h, thickness], center=true);
 }
 
 module pinion() {
