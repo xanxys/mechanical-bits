@@ -24,6 +24,21 @@ conn_data_y(0, 0, 0, false);
 conn_data_x(2, 1, 0, true);
 conn_pwr_y(1, 0, 0, false);
 
+print_support();
+module print_support() {
+  xm = g * 0.25;
+  xp = g * 0.5;
+  ym = g * 0.75;
+  yp = g * 0.25;
+ 
+  difference() { 
+    translate([-xm, -ym, 0])
+    cube([g*2 + xm + xp, g*2 + ym + yp, 1.2]);
+    
+    cube([g*2, g*2, 1.3]);
+  }
+}
+
 
 // i-shaft
 translate([g * 0.5, st_i, g * 0.5])
